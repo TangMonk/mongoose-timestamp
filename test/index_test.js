@@ -26,8 +26,11 @@ var TimeCop = mongoose.model('TimeCop', TimeCopSchema);
 describe('timestamps', function() {
   it('should be set to the same value on creation', function(done) {
     var cop = new TimeCop({ email: 'brian@brian.com' });
-    cop.save( function (err) {
-      cop.createdAt.should.equal(cop.updatedAt);
+    cop.save( function (err, cop) {
+      if (err) done(err);
+      cop.create_at.should.equal(cop.update_at);
+      cop.create_at.should.be.a.Number;
+      cop.create_at.toString().should.have.length(13);
       done();
     });
   })
@@ -37,7 +40,7 @@ describe('timestamps', function() {
       found.email = 'jeanclaude@vandamme.com';
       setTimeout( function () {
         found.save( function (err, updated) {
-          updated.updatedAt.should.be.above(updated.createdAt);
+          updated.update_at.should.be.above(updated.create_at);
           done();
         });
       }, 1000);

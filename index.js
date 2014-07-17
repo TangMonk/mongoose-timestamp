@@ -6,10 +6,10 @@
  */
 
 function timestampsPlugin(schema, options) {
-  var updatedAt = 'updatedAt';
-  var createdAt = 'createdAt';
-  var updatedAtType = Date;
-  var createdAtType = Date;
+  var updatedAt = 'update_at';
+  var createdAt = 'create_at';
+  var updatedAtType = Number;
+  var createdAtType = Number;
   
   if (typeof options === 'object') {
     if (typeof options.updatedAt === 'string') {
@@ -39,7 +39,7 @@ function timestampsPlugin(schema, options) {
       if (this.isNew) {
         this[updatedAt] = this[createdAt];
       } else {
-        this[updatedAt] = new Date;
+        this[updatedAt] = new Date().getTime();
       }
       next();
     });
@@ -48,9 +48,9 @@ function timestampsPlugin(schema, options) {
     schema.add(dataObj);
     schema.pre('save', function (next) {
       if (!this[createdAt]) {
-        this[createdAt] = this[updatedAt] = new Date;
+        this[createdAt] = this[updatedAt] = new Date().getTime();
       } else {
-        this[updatedAt] = new Date;
+        this[updatedAt] = new Date().getTime(); 
       }
       next();
     });
