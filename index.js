@@ -39,7 +39,7 @@ function timestampsPlugin(schema, options) {
       if (this.isNew) {
         this[updatedAt] = this[createdAt];
       } else {
-        this[updatedAt] = new Date().getTime();
+        this[updatedAt] = Math.round(new Date().getTime()/1000);
       }
       next();
     });
@@ -48,9 +48,9 @@ function timestampsPlugin(schema, options) {
     schema.add(dataObj);
     schema.pre('save', function (next) {
       if (!this[createdAt]) {
-        this[createdAt] = this[updatedAt] = new Date().getTime();
+        this[createdAt] = this[updatedAt] = Math.round(new Date().getTime()/1000);
       } else {
-        this[updatedAt] = new Date().getTime(); 
+        this[updatedAt] = Math.round(new Date().getTime()/1000); 
       }
       next();
     });
